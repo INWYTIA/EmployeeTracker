@@ -1,7 +1,6 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
 const consoleT = require("console.table");
-// const controller = require("/controller.js");
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -12,6 +11,40 @@ var connection = mysql.createConnection({
 });
 
 function start () {
+  var bucket = [];
+  var employeeTable = [];
+  connection.query("SELECT * FROM employees", function(err, res) {
+    if (err) throw err;
+    for (key of res) {
+      for (thing in key) {
+        bucket.push(key[thing]);
+      };
+      employeeTable.push(bucket);
+      bucket = [];
+    };
+  });
+  var roleTable = [];
+  connection.query("SELECT * FROM roles", function(err, res) {
+    if (err) throw err;
+    for (key of res) {
+      for (thing in key) {
+        bucket.push(key[thing]);
+      };
+      roleTable.push(bucket);
+      bucket = [];
+    };
+  });
+  var departmentTable = [];
+  connection.query("SELECT * FROM departments", function(err, res) {
+    if (err) throw err;
+    for (key of res) {
+      for (thing in key) {
+        bucket.push(key[thing]);
+      };
+      departmentTable.push(bucket);
+      bucket = [];
+    };
+  });
   inquirer.prompt({
     name: "action",
     type: "list",
@@ -36,12 +69,18 @@ function start () {
             "Departments",
           ]
         }).then(ans => {
-          var target = ans.action.toLowerCase();
-          connection.query("SELECT * FROM ??", [target], function(err, res) {
-            if (err) throw err;
-            console.log(res);
+          switch (ans.action) {
+            case 'Employees':
+              console.table(['ID', 'First Name', 'Last Name', 'Role ID', 'Manager ID'], employeeTable);
+              break;
+            case 'Roles':
+              console.table(['ID', 'Title', 'Salary', 'Department ID'], roleTable);
+              break;
+            case 'Departments':
+              console.table(['ID', 'Name',], departmentTable);
+              break;
+          }
             start();
-          });
         })
         break;
       case 'Add':
@@ -152,6 +191,7 @@ function start () {
             start();
           });
         })
+        break;
       case 'Done':
         connection.end();
         break;
