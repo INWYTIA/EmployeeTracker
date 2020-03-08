@@ -127,7 +127,7 @@ function start () {
                 };
                 connection.query("INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)", [ans.first_name, ans.last_name, ans.role_id, manager], function(err, res) {
                   if (err) throw err;
-                  console.log(res);
+                  console.log('Success!');
                   start();
                 });
               })
@@ -152,7 +152,7 @@ function start () {
               ]).then(ans => {
                 connection.query("INSERT INTO roles (title, salary, department_id) VALUES (?,?,?)", [ans.title, ans.salary, ans.department_id], function(err, res) {
                   if (err) throw err;
-                  console.log(res);
+                  console.log('Success!');
                   start();
                 });
               })
@@ -165,7 +165,7 @@ function start () {
               }).then(ans => {
                 connection.query("INSERT INTO departments (name) VALUES (?)", [ans.name], function(err, res) {
                   if (err) throw err;
-                  console.log(res);
+                  console.log('Success!');
                   start();
                 });
               })
@@ -187,7 +187,7 @@ function start () {
         ]).then(ans => {
           connection.query("UPDATE employees SET role_id = ? WHERE id = ?", [ans.role_id, ans.employee_id], function(err, res) {
             if (err) throw err;
-            console.log(res);
+            console.log('Success!');
             start();
           });
         })
