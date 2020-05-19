@@ -6,7 +6,7 @@ var connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
   user: "root",
-  password: "*Einaria2*",
+  password: "",
   database: "employee_db"
 });
 
@@ -77,7 +77,7 @@ function start () {
               console.table(['ID', 'Title', 'Salary', 'Department ID'], roleTable);
               break;
             case 'Departments':
-              console.table(['ID', 'Name',], departmentTable);
+              console.table(['ID', 'Title',], departmentTable);
               break;
           }
             start();
@@ -159,11 +159,11 @@ function start () {
               break;
             case 'Departments':
               inquirer.prompt({
-                name: "name",
+                name: "title",
                 type: "input",
-                message: "What is the name of this department?",
+                message: "What is the title of this department?",
               }).then(ans => {
-                connection.query("INSERT INTO departments (name) VALUES (?)", [ans.name], function(err, res) {
+                connection.query("INSERT INTO departments (title) VALUES (?)", [ans.title], function(err, res) {
                   if (err) throw err;
                   console.log('Success!');
                   start();
